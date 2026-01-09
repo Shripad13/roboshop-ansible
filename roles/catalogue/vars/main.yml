@@ -1,0 +1,4 @@
+COMPONENT: "catalogue"
+APP_PATH: "/app"
+APP_USER: "roboshop"
+URL: "https://stan-robotshop.s3.amazonaws.com/catalogue-v3.zip"

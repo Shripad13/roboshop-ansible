@@ -1,0 +1,5 @@
+- name: Roboshop ansible-playbook
+  hosts: all
+  become: true
+  roles:
+    - "{{ COMPONENT }}"
