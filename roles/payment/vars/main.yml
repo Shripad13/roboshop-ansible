@@ -1,0 +1,5 @@
+COMPONENT: "payment"
+APP_PATH: "/app"
+APP_USER: "roboshop"
+URL: "https://stan-robotshop.s3.amazonaws.com/payment-v3.zip "
+secrets: "{{ lookup('community.hashi_vault.hashi_vault', 'secret=roboshop-dev/data/rabbitmq token={{vault_token}} url=https://vault.devsecopswithshri.site:8200 validate_certs=False') }}"

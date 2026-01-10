@@ -1,3 +1,6 @@
+- name: Configuring hostname
+  ansible.builtin.shell: set-hostname {{ COMPONENT }}-{{ ENV }}
+
 - name: Installing maven / java11
   ansible.builtin.dnf:
     name: maven

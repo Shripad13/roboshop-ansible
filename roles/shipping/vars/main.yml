@@ -7,5 +7,5 @@ SETUP_SCHEMA: true
 SCHEMA:
   - app-user
   - schema
-  - master-data.js
+  - master-data
 

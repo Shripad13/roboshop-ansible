@@ -14,6 +14,16 @@
     src: "{{COMPONENT}}.repo"
     dest: /etc/yum.repos.d/{{COMPONENT}}.repo
 
+- name: Provision of {{ COMPONENT }} app user
+  community.rabbitmq.rabbitmq_user:
+    user: "{{ APP_USER }}"
+    password: "{{secrets.app_password}}"
+    vhost: /
+    configure_priv: .*
+    read_priv: .*
+    write_priv: .*
+    state: present
+
 - name: ReStarting "{{COMPONENT}}-{{ENV}}" service
   ansible.builtin.systemd_service:
     name: "{{COMPONENT}}"
