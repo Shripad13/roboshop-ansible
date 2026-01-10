@@ -1,0 +1,4 @@
+COMPONENT: "user"
+APP_PATH: "/app"
+APP_USER: "roboshop"
+URL: "https://stan-robotshop.s3.amazonaws.com/user-v3.zip"

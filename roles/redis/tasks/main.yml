@@ -1,0 +1,32 @@
+  
+- name: disabling the default module redis version
+  ansible.builtin.shell: dnf module disable redis -y
+
+- name: Enabling the module redis version 7
+  ansible.builtin.shell: dnf module enable redis:7 -y
+
+- name: Installing {{ COMPONENT }} 
+  ansible.builtin.dnf:
+    name: redis
+    state: latest
+
+- name: Replacing loopback a string in a file2
+  ansible.builtin.replace:
+    path: /etc/redis/redis.conf
+    regexp: '127.0.0.1'
+    replace: '0.0.0.0'
+    backup: yes      
+
+- name: Disabling the Protected mode
+  ansible.builtin.replace:
+    path: /etc/redis/redis.conf
+    regexp: 'protected-mode yes'
+    replace: 'protected-mode no'
+    backup: yes  
+
+- name: Restarting "{{COMPONENT}}" 
+  ansible.builtin.systemd_service:
+    name: redis
+    state: started             #DB's not meant to be restarted all the time
+    enabled: true
+    daemon_reload: true

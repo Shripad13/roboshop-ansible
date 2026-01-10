@@ -1,0 +1,6 @@
+COMPONENT: "rabbitmq"
+APP_PATH: "/app"
+APP_USER: "roboshop"
+URL: "https://stan-robotshop.s3.amazonaws.com/shipping-v3.zip "
+
+

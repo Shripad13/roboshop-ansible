@@ -41,6 +41,7 @@
     src: "{{COMPONENT }}.service"
     dest: /etc/systemd/system/{{COMPONENT}}.service
     
+# Specific to catalogue    
 - name: Copying {{COMPONENT}} repo file
   ansible.builtin.template:
     src: mongo.repo
@@ -60,13 +61,4 @@
     state: restarted
     enabled: true
     daemon_reload: yes
-
-
-# This is the last task to be RUN for Nginx, you can do it on ngnix server
-# - name: Restarting "{{COMPONENT}}" 
-#   ansible.builtin.systemd_service:
-#     name: nginx
-#     state: restarted
-#     enabled: true
-#     daemon_reload: true
 

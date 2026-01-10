@@ -10,7 +10,7 @@
     name: nodejs
     state: present
 
-- name: Cleanup the App Directory
+- name: Cleanup the old App Directory
   ansible.builtin.file:
     path: "{{APP_PATH}}"
     state: absent
@@ -26,7 +26,7 @@
     name: "{{APP_USER}}"
     state: present
 
-- name: Downloading & unarchiving the {{COMPONENT}} Code
+- name: Downloading & unarchiving the "{{COMPONENT}}" Code
   ansible.builtin.unarchive:
     src: "{{ URL }}"
     dest: "{{APP_PATH}}"
@@ -38,35 +38,13 @@
 
 - name: configuring {{COMPONENT}} systemd file
   ansible.builtin.template:
-    src: "{{COMPONENT }}.service"
+    src: "{{COMPONENT}}.service"
     dest: /etc/systemd/system/{{COMPONENT}}.service
     
-- name: Copying {{COMPONENT}} repo file
-  ansible.builtin.template:
-    src: mongo.repo
-    dest: /etc/yum.repos.d/mongo.repo
-
-- name: Installing MongoShell 
-  ansible.builtin.dnf:
-    name: mongodb-mongosh
-    state: present
-
-- name: Inject / Loading Master Data/ app schema
-  ansible.builtin.shell: mongosh --host mongodb-{{ ENV }}.devsecopswithshri.site </app/db/master-data.js
-
 - name: ReStarting "{{COMPONENT}}-{{ENV}}" service
   ansible.builtin.systemd_service:
     name: "{{COMPONENT}}"
     state: restarted
     enabled: true
     daemon_reload: yes
-
-
-# This is the last task to be RUN for Nginx, you can do it on ngnix server
-# - name: Restarting "{{COMPONENT}}" 
-#   ansible.builtin.systemd_service:
-#     name: nginx
-#     state: restarted
-#     enabled: true
-#     daemon_reload: true
 

@@ -1,0 +1,24 @@
+- name: Installing rabbitmq-server 
+  ansible.builtin.package:
+    name: rabbitmq-server
+    state: present
+
+- name: Downloading & unarchiving the {{COMPONENT}} Code
+  ansible.builtin.unarchive:
+    src: "{{ URL }}"
+    dest: "{{APP_PATH}}"
+    remote_src: yes
+
+- name: configuring {{COMPONENT}} systemd file
+  ansible.builtin.template:
+    src: "{{COMPONENT}}.repo"
+    dest: /etc/yum.repos.d/{{COMPONENT}}.repo
+
+- name: ReStarting "{{COMPONENT}}-{{ENV}}" service
+  ansible.builtin.systemd_service:
+    name: "{{COMPONENT}}"
+    state: restarted
+    enabled: true
+    daemon_reload: yes
+
+

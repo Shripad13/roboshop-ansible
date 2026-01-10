@@ -1,0 +1,4 @@
+COMPONENT: "cart"
+APP_PATH: "/app"
+APP_USER: "roboshop"
+URL: "https://stan-robotshop.s3.amazonaws.com/cart-v3.zip"

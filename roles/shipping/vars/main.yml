@@ -1,0 +1,11 @@
+COMPONENT: "shipping"
+APP_PATH: "/app"
+APP_USER: "roboshop"
+URL: "https://stan-robotshop.s3.amazonaws.com/shipping-v3.zip"
+SCHEMA_TYPE: mysql
+SETUP_SCHEMA: true
+SCHEMA:
+  - app-user
+  - schema
+  - master-data.js
+

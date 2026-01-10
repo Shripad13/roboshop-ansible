@@ -1,0 +1,67 @@
+- name: Installing maven 
+  ansible.builtin.package:
+    name: maven
+    state: present
+
+- name: Add application user on {{ COMPONENT }} server
+  ansible.builtin.user:
+    name: "{{APP_USER}}"
+    state: present
+
+- name: Cleanup the App Directory
+  ansible.builtin.file:
+    path: "{{APP_PATH}}"
+    state: absent
+  ignore_errors: true  # optional, in case it doesn't exist (valid only for first time)
+
+- name: Creating the App Directory
+  ansible.builtin.file:
+    path: "{{APP_PATH}}"
+    state: directory
+
+- name: Downloading & unarchiving the {{COMPONENT}} Code
+  ansible.builtin.unarchive:
+    src: "{{ URL }}"
+    dest: "{{APP_PATH}}"
+    remote_src: yes
+
+- name: configuring {{COMPONENT}} systemd file
+  ansible.builtin.template:
+    src: "{{COMPONENT }}.service"
+    dest: /etc/systemd/system/{{COMPONENT}}.service 
+
+- name: Installing mysql-server client
+  ansible.builtin.dnf:
+    name: mysql
+    state: present
+
+- name: Install Pre-req packages for mysql_db
+  ansible.builtin.pip:
+    name: 
+      - PyMySQL
+      - cryptography                             # Dependency packages for community.mysql.mysql_db
+    executable: pip3.11 
+
+- name: Generating npm modules
+  community.general.npm:
+    path: "{{ APP_PATH }}"
+
+- name: Injecting the {{SCHEMA_TYPE}} schema
+  community.mysql.mysql_db:
+    state: import
+    name: all
+    target: /app/db/{{ SCHEMA }}.sql
+    loop: "{{ SCHEMA }}"
+    login_user: root
+    login_password: RoboShop@1
+    #login_password: "{{PWD}}"
+    login_host: mysql-{{ENV}}.devsecopswithshri.site
+
+- name: ReStarting "{{COMPONENT}}-{{ENV}}" service
+  ansible.builtin.systemd_service:
+    name: "{{COMPONENT}}"
+    state: restarted
+    enabled: true
+    daemon_reload: yes
+
+

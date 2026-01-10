@@ -1,0 +1,24 @@
+- name: Install {{COMPONENT}}
+  ansible.builtin.dnf:
+    name: mysql-server
+    state: latest
+
+- name: Vault Pre-Req package HVAC
+  ansible.builtin.include_role:
+    name: common
+    tasks_from: vault-prereq
+
+- name: Starting {{COMPONENT}} service
+  ansible.builtin.systemd_service:
+    name: mysqld
+    state: started
+    enabled: true
+
+- name: Configuring the {{COMPONENT}}
+  #ansible.builtin.shell: mysql_secure_installation --set-root-pass RoboShop@1 || true
+  ansible.builtin.shell: mysql_secure_installation --set-root-pass {{secrets.root_password}} || true
+
+# {{secrets.root_password}} - It is the variable for fetching the details from vault
+
+
+
